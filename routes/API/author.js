@@ -72,4 +72,19 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: "Error occured in creating an author." });
   }
 });
+
+router.get("/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const author = await prisma.author.findUnique({
+      where: {
+        id,
+      },
+    });
+    res.status(200).json(author);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
