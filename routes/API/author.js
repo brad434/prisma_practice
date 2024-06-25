@@ -55,4 +55,21 @@ router.put("/:id", async (req, res) => {
     console.error(error);
   }
 });
+
+router.post("/", async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    const newAuthor = await prisma.author.create({
+      data: {
+        name,
+        email,
+      },
+    });
+    res.status(201).json(newAuthor);
+    console.log("Successfully created new Author!");
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error occured in creating an author." });
+  }
+});
 module.exports = router;
