@@ -27,3 +27,11 @@ model Post{
   authorId Int
   author Author @relation(fields: [authorId], references: [id])
 }
+
+model Student {
+  id Int @id @default(autoincrement())
+  name String
+  courseId Int
+  courseName String
+  cohort String
+}

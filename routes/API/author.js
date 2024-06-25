@@ -75,11 +75,12 @@ router.post("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   try {
-    const id = parseInt(req.params.id);
+    const { id } = req.params;
+    const authorId = parseInt(id);
+
     const author = await prisma.author.findUnique({
-      where: {
-        id,
-      },
+      where: { id: authorId },
+      include: { post: true },
     });
     res.status(200).json(author);
   } catch (error) {
@@ -87,4 +88,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const getAllPost = await prisma.author.findMany({
+      include: {
+        post: true,
+      },
+    });
+    res.status(200).json(getAllPost);
+    console.log("Posts available.");
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ error: "An error occured in the get all post router." });
+  }
+});
 module.exports = router;
